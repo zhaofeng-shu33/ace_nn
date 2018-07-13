@@ -1,4 +1,5 @@
 # ace_nn
+[![Build Status](https://travis-ci.org/zhaofeng-shu33/ace_nn.svg?branch=master)](https://travis-ci.org/zhaofeng-shu33/ace_nn)
 
 ## Introduction
 

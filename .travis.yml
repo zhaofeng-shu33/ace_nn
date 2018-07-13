@@ -1,0 +1,12 @@
+language: python
+python:
+  - "3.6"
+install:
+  - pip install numpy
+  - pip install sklearn
+  - pip install tensorflow
+  - pip install keras
+script:
+  - python BSC.py
+  - python BEC.py
+  - python continuous.py
