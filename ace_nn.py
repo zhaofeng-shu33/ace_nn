@@ -9,7 +9,7 @@ from keras.layers import Input, Lambda, Dense
 from sklearn.preprocessing import OneHotEncoder
 from keras import backend as K
 import numpy as np
-
+import pdb
 
 def neg_hscore(x):
     """
@@ -24,7 +24,7 @@ def neg_hscore(x):
     cov_g = K.dot(K.transpose(g0), g0) / K.cast(K.shape(g0)[0] - 1, dtype = 'float32')
     return - corr + tf.trace(K.dot(cov_f, cov_g)) / 2
 
-def ace_nn(x, y, ns = 1, cat = None, epochs = 300, verbose = False):
+def ace_nn(x, y, ns = 1, cat = None, epochs = 300, verbose = False, return_hscore = False):
     ''' 
     Uses the alternating conditional expectations algorithm
     to find the transformations of y and x that maximise the 
@@ -108,7 +108,9 @@ def ace_nn(x, y, ns = 1, cat = None, epochs = 300, verbose = False):
     model_g = Model(inputs = input_y, outputs = g)
     model.fit([x_internal, y_internal], np.zeros(x_internal.shape), verbose=verbose,
         batch_size = batch_size, epochs = epochs)
-
+    h_score = -model.history.history['loss'][-1] # estimation of 1/2 \norm{\widetilde{B}}_F^2
     t_x = model_f.predict(x_internal)
     t_y = model_g.predict(y_internal)
+    if(return_hscore):
+        return h_score
     return (t_x, t_y)
