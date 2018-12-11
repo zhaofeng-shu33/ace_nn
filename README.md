@@ -13,6 +13,7 @@ Three examples are provided ( one for continuous variable and the other twos are
 import numpy as np
 from ace_nn import ace_nn
 # discrete case, binary symmetric channel with crossover probability 0.1
+N_SIZE = 1000
 x = np.random.choice([0,1], size=N_SIZE)
 n = np.random.choice([0,1], size=N_SIZE, p=[0.9, 0.1])
 y = np.mod(x + n, 2)
