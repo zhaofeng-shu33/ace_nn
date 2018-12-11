@@ -68,7 +68,7 @@ def ace_nn(x, y, ns = 1, cat = None, epochs = 300, verbose = False, return_hscor
     else:
         x_internal = x
 
-    if(len(y.shape) == 1): # if x is rank-1 matrix
+    if(len(y.shape) == 1): # if y is rank-1 matrix
         y_internal = y.reshape([y.shape[0],1])
     else:
         y_internal = y
