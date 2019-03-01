@@ -4,11 +4,11 @@ with open("README.md") as fh:
     
 if __name__ == '__main__':
     setup(name = 'ace_nn',
-          version = '0.1',
+          version = '0.2',
           description = 'Alternating Conditional Exceptation with Neural Network',
           author = 'zhaofeng-shu33',
           author_email = '616545598@qq.com',
-          url = 'https://github.com/zhaofeng-shu33/background_mask',
+          url = 'https://github.com/zhaofeng-shu33/ace_nn',
           maintainer = 'zhaofeng-shu33',
           maintainer_email = '616545598@qq.com',
           long_description = long_description,
