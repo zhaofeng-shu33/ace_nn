@@ -9,7 +9,7 @@ from keras.layers import Input, Lambda, Dense
 from sklearn.preprocessing import OneHotEncoder
 from keras import backend as K
 import numpy as np
-import pdb
+
 
 def neg_hscore(x):
     """
