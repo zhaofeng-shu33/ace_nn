@@ -33,3 +33,6 @@ For more detail, run `help(ace_nn)` to see the parameters and returns of this fu
 Currently, the neural networks used to approximate optimal $f(x)$ and $g(y)$ are two-layer MLP with `tanh` as activation function. More turns of epochs are needed for large alphabet  $|\mathcal{X}|$ and  $|\mathcal{Y}|$ and the running time is not short.
 
 Also, `batch_size` and `hidden_units_num` can be hypertuned, and there is no guarantee that current configuration of neural network is optimal for solving ace.
+
+## Application
+we can use `ace_nn(x, y, return_hscore = True)` to calculate a lower bound of $\frac{\norm{B}_F^2}{2}$
