@@ -24,7 +24,7 @@ def neg_hscore(x):
     cov_f = K.dot(K.transpose(f0), f0) / K.cast(K.shape(f0)[0] - 1, dtype = 'float32')
     cov_g = K.dot(K.transpose(g0), g0) / K.cast(K.shape(g0)[0] - 1, dtype = 'float32')
     return - corr + tf.trace(K.dot(cov_f, cov_g)) / 2
-def ace_nn_img(x, y, ns = 10, epochs = 300, verbose = False, return_hscore = False):
+def ace_nn_img(x, y, ns = 10, epochs = 12, verbose = 0, return_hscore = False):
     ''' 
     Uses the alternating conditional expectations algorithm
     to find the transformations of y and x that maximise the 
