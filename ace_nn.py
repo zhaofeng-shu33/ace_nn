@@ -24,7 +24,7 @@ def neg_hscore(x):
     cov_f = K.dot(K.transpose(f0), f0) / K.cast(K.shape(f0)[0] - 1, dtype = 'float32')
     cov_g = K.dot(K.transpose(g0), g0) / K.cast(K.shape(g0)[0] - 1, dtype = 'float32')
     return - corr + tf.trace(K.dot(cov_f, cov_g)) / 2
-def ace_nn_img(x, y, ns = 10, epochs = 12, verbose = 0, return_hscore = False):
+def ace_nn_img(x, y, ns = 10, epochs = 10, verbose = False, return_hscore = False):
     ''' 
     Uses the alternating conditional expectations algorithm
     to find the transformations of y and x that maximise the 
@@ -57,32 +57,32 @@ def ace_nn_img(x, y, ns = 10, epochs = 12, verbose = 0, return_hscore = False):
     fdim = ns 
     gdim = fdim
     activation_function = 'relu'
-
+    input_shape_x = (x.shape[1], x.shape[2], 1)
+ 
     x_internal = x.reshape(x.shape[0], x.shape[1], x.shape[2], 1)
     y_internal = y.reshape(y.shape[0], y.shape[1], y.shape[2], 1)
-
-    # channel last image format
-    input_shape_x = (x.shape[1], x.shape[2], 1)
-    input_x = Input(shape = input_shape_x)
-    conv1 = Conv2D(32, kernel_size=(3, 3),
+    conv_1_layer = Conv2D(32, kernel_size=(3, 3),
                      activation=activation_function,
-                     input_shape=input_shape_x)(input_x)
-    conv2 = Conv2D(64, (3, 3), activation=activation_function)(conv1)
+                     input_shape=input_shape_x)
+    conv_2_layer = Conv2D(64, (3, 3), activation=activation_function)
+    dense_layer = Dense(fdim, activation=activation_function)
+    # channel last image format
+    input_x = Input(shape = input_shape_x)
+    conv1 = conv_1_layer(input_x)
+    conv2 = conv_2_layer(conv1)
     pool = MaxPooling2D(pool_size=(2, 2))(conv2)    
     f_internal = Dropout(0.25)(pool)
     f_internal_2 = Flatten()(f_internal)
-    f = Dense(fdim, activation=activation_function)(f_internal_2)
+    f = dense_layer(f_internal_2)
 
     input_shape_y = (y.shape[1], y.shape[2], 1)
     input_y = Input(shape = input_shape_y)
-    conv1_y = Conv2D(32, kernel_size=(3, 3),
-                     activation=activation_function,
-                     input_shape=input_shape_y)(input_y)
-    conv2_y = Conv2D(64, (3, 3), activation=activation_function)(conv1_y)
+    conv1_y = conv_1_layer(input_y)
+    conv2_y = conv_2_layer(conv1_y)
     pool_y = MaxPooling2D(pool_size=(2, 2))(conv2_y)    
     g_internal = Dropout(0.25)(pool_y)
     g_internal_2 = Flatten()(g_internal)
-    g = Dense(gdim, activation=activation_function)(g_internal_2)
+    g = dense_layer(g_internal_2)
 
     loss = Lambda(neg_hscore)([f, g])
     model = Model(inputs = [input_x, input_y], outputs = loss)
